@@ -15,7 +15,7 @@ spec:
         app: vote
     spec:
       containers:
-      - image: 826001400561.dkr.ecr.us-east-1.amazonaws.com/vote:latest
+      - image: <aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com/vote:latest
         name: vote
         ports:
         - containerPort: 80

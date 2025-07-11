@@ -15,7 +15,7 @@ spec:
         app: result
     spec:
       containers:
-      - image: 826001400561.dkr.ecr.us-east-1.amazonaws.com/result:latest
+      - image: <aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com/result:latest
         name: result
         ports:
         - containerPort: 80

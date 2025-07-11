@@ -43,7 +43,7 @@ docker --version
 helm version
 
 # Clone the voting app repository
-git clone https://github.com/Azevedoc/example-voting-app.git
+git clone https://github.com/dockersamples/example-voting-app.git
 ```
 
 ---
@@ -60,7 +60,7 @@ git clone https://github.com/Azevedoc/example-voting-app.git
 3. **Choose Auto Mode** (new feature)
 4. **Cluster Configuration**:
    - Name: `happy-dance-badger` (or your preferred name)
-   - Region: `us-east-1`
+   - Region: `<aws-region>`
    - Kubernetes version: `1.33` (latest)
    - Auto Mode: **Enabled**
 5. **Access Configuration**: Keep defaults
@@ -72,7 +72,7 @@ git clone https://github.com/Azevedoc/example-voting-app.git
 
 ```bash
 # Update kubeconfig to connect to your cluster
-aws eks update-kubeconfig --region us-east-1 --name happy-dance-badger
+aws eks update-kubeconfig --region <aws-region> --name happy-dance-badger
 
 # Verify connection
 kubectl get nodes
@@ -87,7 +87,7 @@ EKS Auto Mode uses API authentication. If you get credential errors:
 aws eks create-access-entry \
   --cluster-name happy-dance-badger \
   --principal-arn arn:aws:iam::<your-account-id>:user/<your-username> \
-  --region us-east-1
+  --region <aws-region>
 
 # Associate admin policy
 aws eks associate-access-policy \
@@ -95,7 +95,7 @@ aws eks associate-access-policy \
   --principal-arn arn:aws:iam::<your-account-id>:user/<your-username> \
   --policy-arn arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy \
   --access-scope type=cluster \
-  --region us-east-1
+  --region <aws-region>
 ```
 
 ### **1.4 Verify Auto Mode Features**
@@ -120,7 +120,7 @@ kubectl describe nodes
 
 ```bash
 # Set environment variables
-export AWS_REGION="us-east-1"
+export AWS_REGION="<aws-region>"
 export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 export ECR_REGISTRY="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com"
 
@@ -178,25 +178,14 @@ kubectl create namespace voting-app
 
 ### **3.2 Kubernetes Manifests Ready**
 
-**✅ Pre-configured manifests** available in multiple ways:
-
-**Option A: Local manifests** (in your project directory `k8s-specifications/`):
-All manifests have been updated with:
-
-**Option B: Direct from GitHub** (if you prefer to use manifests directly from repository):
-```bash
-# Apply manifests directly from GitHub (alternative approach)
-kubectl apply -f https://raw.githubusercontent.com/Azevedoc/example-voting-app/refs/heads/main/k8s-specifications/redis-deployment.yaml -n voting-app
-kubectl apply -f https://raw.githubusercontent.com/Azevedoc/example-voting-app/refs/heads/main/k8s-specifications/redis-service.yaml -n voting-app
-# ... and so on for each manifest
-```
-
 **Current local manifests include:**
 
+Update those as needed on your local.
+
 **Image References:**
-- **vote-deployment.yaml**: Uses `826001400561.dkr.ecr.us-east-1.amazonaws.com/vote:latest`
-- **result-deployment.yaml**: Uses `826001400561.dkr.ecr.us-east-1.amazonaws.com/result:latest`
-- **worker-deployment.yaml**: Uses `826001400561.dkr.ecr.us-east-1.amazonaws.com/worker:latest`
+- **vote-deployment.yaml**: Uses `<aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com/vote:latest`
+- **result-deployment.yaml**: Uses `<aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com/result:latest`
+- **worker-deployment.yaml**: Uses `<aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com/worker:latest`
 
 **Service Configurations:**
 - **vote-service.yaml**: `LoadBalancer` type, port `80`
@@ -259,8 +248,8 @@ kubectl logs -l app=worker -n voting-app
 kubectl get services -n voting-app
 
 # You'll see LoadBalancer services with external IPs like:
-# vote     LoadBalancer   a1234567890.us-east-1.elb.amazonaws.com   80:31000/TCP
-# result   LoadBalancer   a0987654321.us-east-1.elb.amazonaws.com   80:31001/TCP
+# vote     LoadBalancer   a1234567890.<aws-region>.elb.amazonaws.com   80:31000/TCP
+# result   LoadBalancer   a0987654321.<aws-region>.elb.amazonaws.com   80:31001/TCP
 ```
 
 ### **4.2 Test the Application**
@@ -335,9 +324,9 @@ kubectl get namespaces
 
 ```bash
 # Delete ECR repositories
-aws ecr delete-repository --repository-name vote --force --region us-east-1
-aws ecr delete-repository --repository-name result --force --region us-east-1
-aws ecr delete-repository --repository-name worker --force --region us-east-1
+aws ecr delete-repository --repository-name vote --force --region <aws-region>
+aws ecr delete-repository --repository-name result --force --region <aws-region>
+aws ecr delete-repository --repository-name worker --force --region <aws-region>
 ```
 
 ### **6.3 Delete EKS Cluster (Optional)**
@@ -349,7 +338,7 @@ aws ecr delete-repository --repository-name worker --force --region us-east-1
 
 **From CLI**:
 ```bash
-aws eks delete-cluster --name happy-dance-badger --region us-east-1
+aws eks delete-cluster --name happy-dance-badger --region <aws-region>
 ```
 
 ---
@@ -389,7 +378,7 @@ aws eks delete-cluster --name happy-dance-badger --region us-east-1
 
 - [AWS EKS Auto Mode Documentation](https://docs.aws.amazon.com/eks/latest/userguide/eks-auto-mode.html)
 - [Kubernetes Best Practices](https://kubernetes.io/docs/concepts/configuration/overview/)
-- [Docker Voting App Repository (Your Fork)](https://github.com/Azevedoc/example-voting-app)
+- [Docker Voting App Repository](https://github.com/dockersamples/example-voting-app)
 - [Original Docker Voting App](https://github.com/dockersamples/example-voting-app)
 - [Karpenter Documentation](https://karpenter.sh/)
 
