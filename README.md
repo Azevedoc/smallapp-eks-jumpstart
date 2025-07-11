@@ -376,10 +376,9 @@ aws eks delete-cluster --name happy-dance-badger --region <aws-region>
 
 ## 📚 **Additional Resources**
 
-- [AWS EKS Auto Mode Documentation](https://docs.aws.amazon.com/eks/latest/userguide/eks-auto-mode.html)
+- [AWS EKS Auto Mode Documentation](https://docs.aws.amazon.com/eks/latest/userguide/automode.html)
 - [Kubernetes Best Practices](https://kubernetes.io/docs/concepts/configuration/overview/)
 - [Docker Voting App Repository](https://github.com/dockersamples/example-voting-app)
-- [Original Docker Voting App](https://github.com/dockersamples/example-voting-app)
 - [Karpenter Documentation](https://karpenter.sh/)
 
 ---
